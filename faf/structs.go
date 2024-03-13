@@ -16,7 +16,33 @@ func (e gasengine) kmsleft() uint8 {
 	return (e.kmpl * e.litres)
 }
 
-func canMakeit(e gasengine , kms uint8 )(bool) {
+
+
+//to show interfaces we will use another engine with same method kmsleft()
+type elecEngine struct {
+	kmpkwh uint8
+	kwh uint8
+}
+
+func (e elecEngine) kmsleft() uint8 {
+	return e.kmpkwh * e.kwh
+}
+
+
+//we can define interface
+type engine interface{
+	kmsleft() uint8
+}
+
+
+
+
+
+
+
+
+
+func canMakeit(e engine , kms uint8 )(bool) {
 	if kms <= e.kmsleft(){
 		fmt.Println("You will make it")
 		return true
