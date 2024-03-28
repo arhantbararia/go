@@ -2,48 +2,47 @@ package main
 
 import (
 	"fmt"
-
 )
 
+
+
+var False = false
+var True = true
+
+
 type gasengine struct{
-	kmpl uint8
-	litres uint8
-	owner_name owner
+	kmpl uint16
+	litres uint16
+	owner_name  owner //instead of owner_name = owner.name, d_o_p = owner.date_of_purchase
 }
 
-//we can define a struct method
+
+
+
 func (e gasengine) kmsleft() uint8 {
-	return (e.kmpl * e.litres)
+	return uint8(e.kmpl * e.litres)
 }
 
-
-
-//to show interfaces we will use another engine with same method kmsleft()
 type elecEngine struct {
-	kmpkwh uint8
-	kwh uint8
+	kmpkwh uint16
+	kwh uint16
 }
+
 
 func (e elecEngine) kmsleft() uint8 {
-	return e.kmpkwh * e.kwh
+	return uint8(e.kmpkwh * e.kwh)
+
 }
 
 
-//we can define interface
+// let's define an interface, or AKA FunctionAPI\
 type engine interface{
-	kmsleft() uint8
+	kmsleft() uint8 //defined a functonal endpoint
 }
 
 
-
-
-
-
-
-
-
-func canMakeit(e engine , kms uint8 )(bool) {
-	if kms <= e.kmsleft(){
+func canMakeit (e engine , kms uint8 ) (bool) {
+	if kms <= e.kmsleft(){ //using the interface defined endpoint
 		fmt.Println("You will make it")
 		return true
 	}else{
@@ -53,25 +52,29 @@ func canMakeit(e engine , kms uint8 )(bool) {
 }
 
 
+
+
 type owner struct{
 	name string
+	date_of_purchase string
 }
 
-func main(){
-	var myEngine gasengine = gasengine{25, 15 , owner{"arhant"}}
-	myEngine.litres = 20
-	fmt.Println(myEngine.kmpl , myEngine.litres)
-	fmt.Println(myEngine.owner_name.name)
 
-	//can also create temporary structs inline definition
+func main(){
+	var gEngine gasengine = gasengine{25 , 26 , owner{"test_name" , "02-08-00"}}
+	gEngine.litres = 20
+	fmt.Println(gEngine)
+	fmt.Println(gEngine.owner_name.date_of_purchase)
+
+	//can also create temporary struct inline definition
 	var myEngine2 = struct{
 		kmpl int32
 		litres int32
-	}{20 , 29}
+
+	}{20, 23}
 	//the above definition method is not reusable, only one instance is created this can be used to declare constant objects
 	fmt.Println(myEngine2.kmpl)
 
-	//calling struct method
-	fmt.Println(myEngine.kmsleft())
-		
+	canMakeit(gEngine , 20)
+	
 }
