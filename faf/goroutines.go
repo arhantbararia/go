@@ -14,9 +14,11 @@ var results = []string{}
 
 func main() {
 	to := time.Now()
-	for i := 0; i < len(dbData); i++ {
+	for i := 0; i < 100000; i++ {
 		wg.Add(1) //2. this will increment group member by 1 adding the thread(subtask) to the group
-		go dbCall(i)
+		// go dbCall(i)
+		// go timed()
+		go iterative()
 		//1.  using go alone will put all threads in background and will not wait for them to finish
 		// here it will just exit, therefore we need to define some breakpoints, between which
 		// execution of all subtasks must be completed
@@ -26,6 +28,22 @@ func main() {
 	wg.Wait() //4. this is the endpoint before which waitgroup member count must be zero
 	fmt.Printf("\n Total Execution time: %v", time.Since(to))
 	fmt.Printf("\nThe results are: %v", results)
+
+}
+
+func timed() {
+	time.Sleep(time.Duration(float32(2000)) * time.Millisecond)
+	wg.Done()
+
+}
+
+func iterative() {
+	var res int32
+
+	for i := 0; i <= 10000000; i++ {
+		res += 1
+	}
+	wg.Done()
 
 }
 
