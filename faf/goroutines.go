@@ -14,11 +14,13 @@ var results = []string{}
 
 func main() {
 	to := time.Now()
-	for i := 0; i < 100000; i++ {
+	for i := 0; i < 1000; i++ {
 		wg.Add(1) //2. this will increment group member by 1 adding the thread(subtask) to the group
 		// go dbCall(i)
-		// go timed()
-		go iterative()
+		// go timed() // to complete all timed() goroutines is independent of number of threads(or calls) and constant
+		go iterative() // time to complete all iterative() goroutines is directly proportional to the number of threads
+		// this is dependent of resource use. time.Sleep doesn't use any resources. While iterative's for loop do use CPU time.
+
 		//1.  using go alone will put all threads in background and will not wait for them to finish
 		// here it will just exit, therefore we need to define some breakpoints, between which
 		// execution of all subtasks must be completed
@@ -39,10 +41,12 @@ func timed() {
 
 func iterative() {
 	var res int32
+	t := time.Now()
 
 	for i := 0; i <= 10000000; i++ {
 		res += 1
 	}
+	fmt.Printf("time taken by the loop number is: %v \n", time.Since(t))
 	wg.Done()
 
 }
