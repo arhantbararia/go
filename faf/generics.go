@@ -7,6 +7,8 @@ import (
 func main() {
 	var intSlice = []int{1, 2, 3}
 	var float32slice = []float32{1, 2.1, 3}
+	var emptyIntSlice = []int{}
+	var emptyfloat32slice = []float32{}
 
 	fmt.Println(SumintSlice(intSlice))
 	fmt.Println(Sumfloat32Slice(float32slice))
@@ -17,6 +19,10 @@ func main() {
 	fmt.Println("By Generics")
 	fmt.Println(sumSlice[float32](float32slice))
 	fmt.Println(sumSlice[int](intSlice))
+
+	//3. 'any' type in generics
+	fmt.Println(isEmpty[int](emptyIntSlice))         // OR isEmpty(emptyIntSlice)
+	fmt.Println(isEmpty[float32](emptyfloat32slice)) // OR isEmpty(emptyfloat32slice)
 
 }
 
@@ -37,11 +43,16 @@ func Sumfloat32Slice(float32slice []float32) float32 {
 	return sum
 }
 
+// 2. using generics
 func sumSlice[T int | float32 | float64](slice []T) T {
 	var sum T
 	for _, v := range slice {
 		sum += v
-
 	}
 	return sum
+}
+
+// 3. Using 'any'
+func isEmpty[T any](slice []T) bool {
+	return len(slice) == 0
 }
