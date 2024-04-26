@@ -17,26 +17,33 @@ type PurchaseInfo struct {
 	Amount int
 }
 
+func main() {
+	contactData := loadJSON[ContactInfo]("contactInfo.json")
+	purchaseData := loadJSON[PurchaseInfo]("purchaseInfo.json")
 
-func main(){
-	var contactData := loadJSON[ContactInfo]("./contactInfo.json")
-	var purchaseData := loadJSON[PurchaseInfo]("./purchaseInfo.json")
-	
+	fmt.Println(contactData)
+	fmt.Println(purchaseData)
 
 }
 
+func loadJSON[T ContactInfo | PurchaseInfo](filepath string) []T {
+	data, err := os.Open(filepath)
+	if err != nil {
 
-func loadJSON[T ContactInfo | PurchaseInfo](filepath string) ([]T) {
-	data, _ := os.Open(filepath)
+		fmt.Println("some error occurred during reading file")
+		fmt.Println(err)
+	}
 	defer data.Close()
 
 	var loaded = []T{}
 
 	decoder := json.NewDecoder(data)
-	err := decoder.Decode(&loaded) //inplace storing that's why address is passed
+	err = decoder.Decode(&loaded) //inplace storing that's why address is passed
 
 	if err != nil {
-		fmt.Println()
+
+		fmt.Println("some error occurred during Decoding")
+		fmt.Println(err)
 	}
 	return loaded
 
