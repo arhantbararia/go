@@ -35,6 +35,8 @@ func SumintSlice(intSlice []int) int {
 	return sum
 }
 
+
+
 func Sumfloat32Slice(float32slice []float32) float32 {
 	var sum float32
 	for _, v := range float32slice {
