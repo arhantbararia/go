@@ -50,6 +50,5 @@ func goprocess(c chan int) {
 		c <- i
 	}
 	fmt.Println("Exiting GoProcess")
-
 	
 }
